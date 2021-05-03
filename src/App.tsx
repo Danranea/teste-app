@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import api from './Api';
 
+
+
 class App extends Component{
   
   state={
@@ -8,7 +10,7 @@ class App extends Component{
   }
 
   async componentDidMount(){
-    const response = await api.get('');
+    const response = await api.get(' ');
     console.log(response.data)
     this.setState({cursos: response.data});
   }
@@ -24,8 +26,10 @@ class App extends Component{
          </h1>
          {console.log(cursos)}
          {cursos.map(curso => (
-           <li key={curso}>
-
+           <li >
+             <h2>
+              
+             </h2>
            </li>
          ))}
        </div>
