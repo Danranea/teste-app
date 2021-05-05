@@ -3,7 +3,8 @@ import InputMask from 'react-input-mask';
 import api from './Api';
 import Modal from './components/Modal';
 import './styles.scss'
-import FormatarMoeda from './functions';
+import FormatarMoeda from './functions/FormatarMoeda';
+import ApenasLetras from './functions/ApenasLetras'
 
 type FormState = {
   full_price: number,
@@ -29,44 +30,76 @@ const App = () => {
 
   const [cursos, setCursos] = useState<FormState[]>([]);
   const [modalShow, setModalShow] = useState(false);
-
-  useEffect(() => {
-    // api.get(' ')
-    //   .then(response => {
-    //     setCursos(response.data)
-    //   })
-    setCursos([{
-      full_price: 23,
-      price_with_discount: 24,
-      discount_percentage: 25,
-      start_date: "01/05/2021",
-      enrollment_semester: 26,
-      enabled: true,
-      course: {
-        name: "Sillas Chan"
-      },
-      campus: {
-        city: "São Paulo"
-      }
+  const response = [{
+    "full_price": 500,
+    "price_with_discount": 450,
+    "discount_percentage": 0.10,
+    "start_date": "2021-01-01",
+    "enrollment_semester": 2,
+    "enabled": true,
+    "course": {
+      "name": "Análise e desenvolvimento de sistemas",
+      "kind": "Técnologo",
+      "level": "Técnologo",
+      "shift": null
     },
+    "university":
     {
-      full_price: 31,
-      price_with_discount: 32,
-      discount_percentage: 33,
-      start_date: "03/05/2021",
-      enrollment_semester: 34,
-      enabled: true,
-      course: {
-        name: "Sillas Chan 2"
-      },
-      campus: {
-        city: "São Paulooooo"
-      }
-    }])
-  }, [])
+      "name": "Unip",
+      "score": 7.2,
+      "logo_url": "http://sindbeneficente.org.br/files/imagens/Noticias/logotipo_unip.jpg"
+    },
+    "campus": {
+      "name": "Tatuapé",
+      "city": "São Paulo"
+    }
+  },
+  { "full_price": 875, 
+  "price_with_discount": 815.7, 
+  "discount_percentage": 0.78, 
+  "start_date": "2021-01-01", 
+  "enrollment_semester": 1, 
+  "enabled": true, 
+  "course": 
+  { "name": "Ciências da computação", 
+  "kind": "Bacharelado", 
+  "level": "Bacharelado", 
+  "shift": null }, 
+  "university": { "name": "Unip", 
+  "score": 7.2, 
+  "logo_url": "http://sindbeneficente.org.br/files/imagens/Noticias/logotipo_unip.jpg" }, 
+  "campus": 
+  { "name": "Tatuapé", 
+  "city": 
+  "São Paulo" }
+}, 
+{ "full_price": 745, 
+"price_with_discount": 710, 
+"discount_percentage": 0.47, 
+"start_date": "2021-06-01", 
+"enrollment_semester": 1, 
+"enabled": true, 
+"course": 
+{ "name": "Ciências Contábeis", 
+"kind": "Bacharelado", 
+"level": "Bacharelado", 
+"shift": null }, 
+"university": 
+{ "name": "Unip", 
+"score": 7.2, 
+"logo_url": "http://sindbeneficente.org.br/files/imagens/Noticias/logotipo_unip.jpg" }, 
+"campus": 
+{ "name": "Tatuapé", 
+"city": "São Paulo" }} ]
 
+  /* useEffect(() => {
+    api.get(' ')
+      .then(response => {
+        
+      })
+    
+  }, []) */
 
-  console.log(cursos)
   return (
     <div>
       <h1 className="titulo-app">
@@ -84,16 +117,19 @@ const App = () => {
         <div>
           <input
             className="input-app-second"
-            placeholder="Curso" />
+            placeholder="Curso"
+            id="valor"
+            type="text"
+            onKeyPress={ApenasLetras}
+          />
         </div>
         <div >
           <input
             className="input-app-third"
             placeholder="Preço"
-            id="valor"
             type="text"
-            onKeyUp={FormatarMoeda} 
-            maxLength={9}/>
+            onKeyUp={FormatarMoeda}
+            maxLength={9} />
 
         </div>
 
@@ -102,7 +138,7 @@ const App = () => {
       <table className="table-app">
         <thead>
           <tr>
-            {/* <th>Logo</th> */}
+            <th>Logo</th>
             <th>Nome do Curso</th>
             <th>Cidade</th>
             <th>Preço</th>
@@ -110,8 +146,11 @@ const App = () => {
           </tr>
         </thead>
         <tbody>
-          {cursos.map(curso => (
+          {response.map(curso => (
             <tr /* key={curso.id} */>
+              <td>
+                <img className="img-cursos" src={curso.university.logo_url}/>
+              </td>
               <td>{curso.course.name}</td>
               <td>{curso.campus.city}</td>
               <td>{curso.price_with_discount}</td>
@@ -126,10 +165,9 @@ const App = () => {
           ))}
         </tbody>
       </table>
-      {/* <Modal
-        modalShow={modalShow}
-      setModalShow = {setModalShow}
-      /> */}
+      <Modal
+        show={modalShow}
+      />
 
     </div >
   )

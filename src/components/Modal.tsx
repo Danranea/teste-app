@@ -2,14 +2,17 @@ import { Dispatch, SetStateAction, useState } from 'react';
 import './styles.scss'
 
 type ModalProps = {
-    modalShow: boolean;
-    setModalShowState: (state:boolean) => void;
+    show: boolean;
+    /* setModalShowState: (state:boolean) => void; */
 }
 
-const Modal = () => {
+const Modal = ({show}:ModalProps) => {
 
-    const [modalShow, setModalShow] = useState(false);
+    const [modalShow, setModalShow] = useState(show);
     
+    function setShow(){
+        setModalShow(!show)
+    }
 
     return (
         
@@ -17,7 +20,7 @@ const Modal = () => {
             {console.log(modalShow)}
             <div className="modal-content">
                 <div className="modal-header">
-                    <span className="close"
+                    <span className="close" onClick={setShow}
                     >&times;</span>
                     
                     <h2>Modal Header</h2>

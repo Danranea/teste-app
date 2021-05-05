@@ -40,10 +40,17 @@
     margin-left: 100px;
     text-align: center;
     font-family: 'Roboto', sans-serif;
+    td {
+        padding: 20px 20px;
+    }
 }
 
 .titulo-app {
     text-align: center;
     color: #18ACC4;
     font-family: 'Roboto', sans-serif;
+}
+
+.img-cursos {
+    max-width: 150px;
 }
