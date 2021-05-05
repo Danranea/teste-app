@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import InputMask from 'react-input-mask';
 import api from './Api';
 import Modal from './components/Modal';
+import './styles.scss'
+import FormatarMoeda from './functions';
 
 type FormState = {
   full_price: number,
@@ -25,7 +28,7 @@ type ModalProps = {
 const App = () => {
 
   const [cursos, setCursos] = useState<FormState[]>([]);
-  const [modalShow, setModalShow] = React.useState(false);
+  const [modalShow, setModalShow] = useState(false);
 
   useEffect(() => {
     // api.get(' ')
@@ -66,10 +69,37 @@ const App = () => {
   console.log(cursos)
   return (
     <div>
-      <h1>
+      <h1 className="titulo-app">
         Lista de Cursos
       </h1>
-      <table>
+
+      <div className="input-app">
+
+        <div >
+          <input
+            className="input-app-first"
+            placeholder="Cidade"
+            required />
+        </div>
+        <div>
+          <input
+            className="input-app-second"
+            placeholder="Curso" />
+        </div>
+        <div >
+          <input
+            className="input-app-third"
+            placeholder="Preço"
+            id="valor"
+            type="text"
+            onKeyUp={FormatarMoeda} 
+            maxLength={9}/>
+
+        </div>
+
+      </div>
+
+      <table className="table-app">
         <thead>
           <tr>
             {/* <th>Logo</th> */}
@@ -96,9 +126,13 @@ const App = () => {
           ))}
         </tbody>
       </table>
-      <Modal/>
-    </div>
-  ) 
+      {/* <Modal
+        modalShow={modalShow}
+      setModalShow = {setModalShow}
+      /> */}
+
+    </div >
+  )
 }
 
 export default App;
