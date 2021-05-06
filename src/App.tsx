@@ -41,7 +41,7 @@ const App = () => {
   function pesquisa(){
     const cidade = (document.getElementById('cidade') as HTMLInputElement).value;
     const cursoVar = (document.getElementById('curso') as HTMLInputElement).value;
-    const preco = (document.getElementById('preco') as HTMLInputElement).value;
+    /* const preco = (document.getElementById('preco') as HTMLInputElement).value; */
     const cursos :FormState[] = [];
     
     response.forEach(curso => {
@@ -149,23 +149,32 @@ const App = () => {
             placeholder="Curso"
             id="curso"
             type="text"
-            onKeyPress={ApenasLetras}
+            onChange={ApenasLetras}
           />
         </div>
         <div >
           <input
-            id = "preco"
+            id = "preco-minimo"
             className="input-app-third"
-            placeholder="Preço"
+            placeholder="Preço Mínimo"
             type="text"
-            onKeyUp={FormatarMoeda}
+            onChange={() => FormatarMoeda('preco-minimo')}
             maxLength={9} />
 
+            <input
+            id = "preco-maximo"
+            className="input-app-third"
+            placeholder="Preço Máximo"
+            type="text"
+            onChange={() => FormatarMoeda('preco-maximo')}
+            maxLength={9} /> 
+            
         </div>
 
       </div>
       <div>
         <button
+        className="button-search"
         onClick={pesquisa}>
           Buscar
         </button>
