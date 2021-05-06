@@ -16,6 +16,11 @@ type FormState = {
   course: {
     name: string
   }
+  university: {
+      name: string,
+      score: number,
+      logo_url: string
+  }
   campus: {
     city: string
   }
@@ -29,7 +34,30 @@ type ModalProps = {
 const App = () => {
 
   const [cursos, setCursos] = useState<FormState[]>([]);
+  const [cursosFilter, setCursosFilter] = useState<FormState[]>([]);
+    
   const [modalShow, setModalShow] = useState(false);
+
+  function pesquisa(){
+    const cidade = (document.getElementById('cidade') as HTMLInputElement).value;
+    const cursoVar = (document.getElementById('curso') as HTMLInputElement).value;
+    const preco = (document.getElementById('preco') as HTMLInputElement).value;
+    const cursos :FormState[] = [];
+    
+    response.forEach(curso => {
+      if (curso.campus.city.includes(cidade) && curso.course.name.includes(cursoVar)) {
+          cursos.push(curso)
+      }
+    });
+
+    setCursosFilter(cursos);
+    console.log(cursosFilter)
+  }
+
+  useEffect(() => {
+    pesquisa()
+}, [])
+  
   const response = [{
     "full_price": 500,
     "price_with_discount": 450,
@@ -110,6 +138,7 @@ const App = () => {
 
         <div >
           <input
+            id="cidade"
             className="input-app-first"
             placeholder="Cidade"
             required />
@@ -118,13 +147,14 @@ const App = () => {
           <input
             className="input-app-second"
             placeholder="Curso"
-            id="valor"
+            id="curso"
             type="text"
             onKeyPress={ApenasLetras}
           />
         </div>
         <div >
           <input
+            id = "preco"
             className="input-app-third"
             placeholder="Preço"
             type="text"
@@ -133,6 +163,12 @@ const App = () => {
 
         </div>
 
+      </div>
+      <div>
+        <button
+        onClick={pesquisa}>
+          Buscar
+        </button>
       </div>
 
       <table className="table-app">
@@ -146,7 +182,7 @@ const App = () => {
           </tr>
         </thead>
         <tbody>
-          {response.map(curso => (
+          {cursosFilter.map(curso => (
             <tr /* key={curso.id} */>
               <td>
                 <img className="img-cursos" src={curso.university.logo_url}/>
