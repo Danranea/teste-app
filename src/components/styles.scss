@@ -64,8 +64,8 @@
 
 .modal-header {
     padding: 2px 16px;
-    background-color: #5cb85c;
-    color: white;
+    background-color: rgb(204, 194, 194);
+    color: black;
 }
 
 .modal-body {
@@ -74,10 +74,35 @@
 
 .modal-footer {
     padding: 2px 16px;
-    background-color: #5cb85c;
-    color: white;
+    background-color: rgb(204, 194, 194);
+    color: black;
 }
 
 .modal-show {
     display: block;
+}
+
+.curso-kind {
+    display: flex;
+    margin-left: 180px;
+    margin-top: -30px;
+}
+
+.curso-level {
+    display: flex;
+    margin-left: 350px;
+    margin-top: -47px;
+}
+
+.modal-body {
+    display: flex;
+}
+
+.university-score {
+    margin-left: 30px;
+}
+
+.campus-city {
+    margin-top: 20px;
+    margin-left: 30px;
 }

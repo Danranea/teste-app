@@ -1,30 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import InputMask from 'react-input-mask';
 import api from './Api';
 import Modal from './components/Modal';
 import './styles.scss'
 import FormatarMoeda from './functions/FormatarMoeda';
 import ApenasLetras from './functions/ApenasLetras'
-
-type FormState = {
-  full_price: number,
-  price_with_discount: number,
-  discount_percentage: number,
-  start_date: string,
-  enrollment_semester: number,
-  enabled: boolean,
-  course: {
-    name: string
-  }
-  university: {
-      name: string,
-      score: number,
-      logo_url: string
-  }
-  campus: {
-    city: string
-  }
-}
+import {CourseInform} from './types/types';
 
 type ModalProps = {
   show: boolean,
@@ -33,32 +14,33 @@ type ModalProps = {
 
 const App = () => {
 
-  const [cursos, setCursos] = useState<FormState[]>([]);
-  const [cursosFilter, setCursosFilter] = useState<FormState[]>([]);
-    
+  const [curso, setCurso] = useState<CourseInform>();
+  const [cursosFilter, setCursosFilter] = useState<CourseInform[]>([]);
+
   const [modalShow, setModalShow] = useState(false);
 
-  function pesquisa(){
+  const pesquisa = /* useCallback( */ () => {
     const cidade = (document.getElementById('cidade') as HTMLInputElement).value;
     const cursoVar = (document.getElementById('curso') as HTMLInputElement).value;
     /* const preco = (document.getElementById('preco') as HTMLInputElement).value; */
-    const cursos :FormState[] = [];
-    
+    const cursos: CourseInform[] = [];
+
     response.forEach(curso => {
       if (curso.campus.city.includes(cidade) && curso.course.name.includes(cursoVar)) {
-          cursos.push(curso)
+        cursos.push(curso)
       }
     });
 
     setCursosFilter(cursos);
     console.log(cursosFilter)
-  }
+  }/* , [cursosFilter]) */
 
-  useEffect(() => {
-    pesquisa()
-}, [])
-  
-  const response = [{
+    useEffect(() => {
+      console.log('rodei')
+      pesquisa()
+    }, [/* pesquisa */])
+
+  const response :CourseInform[] = [{
     "full_price": 500,
     "price_with_discount": 450,
     "discount_percentage": 0.10,
@@ -69,7 +51,7 @@ const App = () => {
       "name": "Análise e desenvolvimento de sistemas",
       "kind": "Técnologo",
       "level": "Técnologo",
-      "shift": null
+      "shift": ''
     },
     "university":
     {
@@ -82,43 +64,58 @@ const App = () => {
       "city": "São Paulo"
     }
   },
-  { "full_price": 875, 
-  "price_with_discount": 815.7, 
-  "discount_percentage": 0.78, 
-  "start_date": "2021-01-01", 
-  "enrollment_semester": 1, 
-  "enabled": true, 
-  "course": 
-  { "name": "Ciências da computação", 
-  "kind": "Bacharelado", 
-  "level": "Bacharelado", 
-  "shift": null }, 
-  "university": { "name": "Unip", 
-  "score": 7.2, 
-  "logo_url": "http://sindbeneficente.org.br/files/imagens/Noticias/logotipo_unip.jpg" }, 
-  "campus": 
-  { "name": "Tatuapé", 
-  "city": 
-  "São Paulo" }
-}, 
-{ "full_price": 745, 
-"price_with_discount": 710, 
-"discount_percentage": 0.47, 
-"start_date": "2021-06-01", 
-"enrollment_semester": 1, 
-"enabled": true, 
-"course": 
-{ "name": "Ciências Contábeis", 
-"kind": "Bacharelado", 
-"level": "Bacharelado", 
-"shift": null }, 
-"university": 
-{ "name": "Unip", 
-"score": 7.2, 
-"logo_url": "http://sindbeneficente.org.br/files/imagens/Noticias/logotipo_unip.jpg" }, 
-"campus": 
-{ "name": "Tatuapé", 
-"city": "São Paulo" }} ]
+  {
+    "full_price": 875,
+    "price_with_discount": 815.7,
+    "discount_percentage": 0.78,
+    "start_date": "2021-01-01",
+    "enrollment_semester": 1,
+    "enabled": true,
+    "course":
+    {
+      "name": "Ciências da computação",
+      "kind": "Bacharelado",
+      "level": "Bacharelado",
+      "shift": ''
+    },
+    "university": {
+      "name": "Unip",
+      "score": 7.2,
+      "logo_url": "http://sindbeneficente.org.br/files/imagens/Noticias/logotipo_unip.jpg"
+    },
+    "campus":
+    {
+      "name": "Tatuapé",
+      "city":
+        "São Paulo"
+    }
+  },
+  {
+    "full_price": 745,
+    "price_with_discount": 710,
+    "discount_percentage": 0.47,
+    "start_date": "2021-06-01",
+    "enrollment_semester": 1,
+    "enabled": true,
+    "course":
+    {
+      "name": "Ciências Contábeis",
+      "kind": "Bacharelado",
+      "level": "Bacharelado",
+      "shift": ''
+    },
+    "university":
+    {
+      "name": "Unip",
+      "score": 7.2,
+      "logo_url": "http://sindbeneficente.org.br/files/imagens/Noticias/logotipo_unip.jpg"
+    },
+    "campus":
+    {
+      "name": "Tatuapé",
+      "city": "São Paulo"
+    }
+  }]
 
   /* useEffect(() => {
     api.get(' ')
@@ -127,6 +124,11 @@ const App = () => {
       })
     
   }, []) */
+
+  function detalhesCurso(curso: CourseInform){
+    setCurso(curso)
+    setModalShow(true)
+  }
 
   return (
     <div>
@@ -154,28 +156,28 @@ const App = () => {
         </div>
         <div >
           <input
-            id = "preco-minimo"
+            id="preco-minimo"
             className="input-app-third"
             placeholder="Preço Mínimo"
             type="text"
             onChange={() => FormatarMoeda('preco-minimo')}
             maxLength={9} />
 
-            <input
-            id = "preco-maximo"
+          <input
+            id="preco-maximo"
             className="input-app-third"
             placeholder="Preço Máximo"
             type="text"
             onChange={() => FormatarMoeda('preco-maximo')}
-            maxLength={9} /> 
-            
+            maxLength={9} />
+
         </div>
 
       </div>
       <div>
         <button
-        className="button-search"
-        onClick={pesquisa}>
+          className="button-search"
+          onClick={pesquisa}>
           Buscar
         </button>
       </div>
@@ -194,14 +196,14 @@ const App = () => {
           {cursosFilter.map(curso => (
             <tr /* key={curso.id} */>
               <td>
-                <img className="img-cursos" src={curso.university.logo_url}/>
+                <img className="img-cursos" src={curso.university.logo_url} />
               </td>
               <td>{curso.course.name}</td>
               <td>{curso.campus.city}</td>
               <td>{curso.price_with_discount}</td>
               <td>
                 <button
-                  onClick={() => setModalShow(true)}>
+                  onClick={() => detalhesCurso(curso)}>
                   Detalhes
                 </button>
               </td>
@@ -210,10 +212,13 @@ const App = () => {
           ))}
         </tbody>
       </table>
-      <Modal
-        show={modalShow}
-      />
-
+      {curso &&
+        <Modal
+          modalShow={modalShow}
+          setModalShow = {setModalShow}
+          curso={curso}
+        />
+      }
     </div >
   )
 }
